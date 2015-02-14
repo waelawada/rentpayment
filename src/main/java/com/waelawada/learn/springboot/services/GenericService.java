@@ -12,11 +12,18 @@ public abstract class GenericService<Entity extends java.lang.Object, Dao extend
     Dao dao;
 
     public Entity save(Entity entity){
-        return (Entity)dao.save(entity);
+        return (Entity) dao.save(entity);
     }
 
     public void delete(Long id){
         dao.delete(id);
     }
 
+    public Long getCount(){
+        return dao.count();
+    }
+
+    public Entity findById(Long id){
+        return (Entity) dao.findOne(id);
+    }
 }

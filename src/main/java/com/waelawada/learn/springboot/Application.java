@@ -10,9 +10,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableAutoConfiguration
+@EnableTransactionManagement
+@EnableJpaRepositories("com.waelawada.learn.springboot.dao")
 @ComponentScan(basePackages = "com.waelawada.learn.springboot")
 public class Application {
 

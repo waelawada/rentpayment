@@ -4,6 +4,7 @@ import com.waelawada.learn.springboot.dao.AddressDao;
 import com.waelawada.learn.springboot.dao.UserDao;
 import com.waelawada.learn.springboot.domain.User;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
+import com.waelawada.learn.springboot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,46 +18,42 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
     @Autowired
     private AddressDao addressDao;
 
     @RequestMapping(value = "/{id}")
-    public String index(@PathVariable Long id) {
-        return userDao.findOne(id).toString();
+    public User index(@PathVariable Long id) {
+        return userService.findById(id);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addUser(User user){
-        return userDao.save(user).toString();
+    public User addUser(User user){
+        return userService.save(user);
     }
 
-    @RequestMapping(value = "/{id}/addPaymentMethod", method = RequestMethod.POST)
-    public String addPaymentMethodToUser(@PathVariable Long id, PaymentMethod paymentMethod){
-        User user = userDao.findOne(id);
-        user.getPaymentMethods().add(paymentMethod);
-        return userDao.save(user).toString();
+    @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
+    public User updateUser(@PathVariable Long id, User user){
+        return userService.updateUser(id, user);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public String updateUser(@PathVariable Long id, User user){
-        User userToBeUpdated = userDao.findOne(id);
-        if(user.getAddress() != userToBeUpdated.getAddress()){
-            userToBeUpdated.setAddress(user.getAddress());
-        }
-        if(!user.getEmail().equals(userToBeUpdated.getEmail())){
-            userToBeUpdated.setEmail(user.getEmail());
-        }
-        if(!user.getFirstName().equals(userToBeUpdated.getFirstName())){
-            userToBeUpdated.setFirstName(user.getFirstName());
-        }
-        if(!user.getLastName().equals(userToBeUpdated.getLastName())){
-            userToBeUpdated.setLastName(user.getLastName());
-        }
-        if(!user.getPassword().equals(userToBeUpdated.getPassword())){
-            userToBeUpdated.setPassword(user.getPassword());
-        }
-        return userDao.save(userToBeUpdated).toString();
+    @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.POST)
+    public User addPaymentMethodToUser(@PathVariable Long id, PaymentMethod paymentMethod){
+        User user = userService.findById(id);
+        return userService.addPaymentMethodToUser(user, paymentMethod);
     }
+
+    @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.GET)
+    public List<PaymentMethod> getPaymentMethodsByUser(@PathVariable Long id){
+        User user = userService.findById(id);
+        return user.getPaymentMethods();
+    }
+
+    @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.DELETE)
+    public Boolean deletePaymentMethod(@PathVariable Long id, Long paymentMethodId){
+        return userService.removePaymentMethodForUser(id, paymentMethodId);
+    }
+
+
 }

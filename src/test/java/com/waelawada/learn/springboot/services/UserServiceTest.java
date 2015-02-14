@@ -8,15 +8,19 @@ import com.waelawada.learn.springboot.domain.User;
 import com.waelawada.learn.springboot.domain.billing.BankAccount;
 import com.waelawada.learn.springboot.domain.billing.CreditCard;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.*;
 /**
  * Created by waelawada on 2/13/15.
  */
@@ -30,7 +34,16 @@ public class UserServiceTest {
     @Autowired
     private PaymentMethodDao paymentMethodDao;
 
+    private Long count;
+
+    @Before
+    public void setup(){
+        count = userService.getCount();
+    }
+
+
     @Test
+    @Transactional
     public void testSaveUser(){
 
         User user = new User();
@@ -49,10 +62,10 @@ public class UserServiceTest {
 
         user.setAddress(address);
 
-        BankAccount paymentMethod = new BankAccount();
-        paymentMethod.setAccountNumber("1234567890");
-        paymentMethod.setRoutingNumber("123123123");
-        paymentMethodDao.save(paymentMethod);
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setAccountNumber("1234567890");
+        bankAccount.setRoutingNumber("123123123");
+        paymentMethodDao.save(bankAccount);
 
         CreditCard creditCard = new CreditCard();
         creditCard.setCreditCardNumber("1234567890123456");
@@ -60,16 +73,20 @@ public class UserServiceTest {
         creditCard.setCvv2("019");
         creditCard.setToken("123456789");
         creditCard.setBillingAddress(address);
+        paymentMethodDao.save(creditCard);
 
-
-        List<PaymentMethod> paymentMethods = Arrays.asList((PaymentMethod)paymentMethod);
+        List<PaymentMethod> paymentMethods = Arrays.asList(bankAccount, creditCard);
         user.setPaymentMethods(paymentMethods);
 
-        userService.save(user);
+        User savedUser = userService.save(user);
 
+        assertEquals("Count of rows didn't change", new Long(count+1) , userService.getCount());
 
-        System.out.println("TEST NOW");
+        User userInDb = userService.findById(savedUser.getId());
+        userInDb.getAddress();
+        userInDb.getPaymentMethods();
 
+        assertEquals(savedUser, userService.findById(savedUser.getId()));
 
     }
 
