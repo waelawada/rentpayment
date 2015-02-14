@@ -18,22 +18,24 @@ public class UserService extends GenericService<User, UserDao> {
     @Autowired
     private PaymentMethodDao paymentMethodDao;
 
-    public User updateUser(Long id, User user){
-        User userToBeUpdated = dao.findOne(id);
-        if(user.getAddress() != userToBeUpdated.getAddress()){
+    public User updateUser(User userToBeUpdated, User user){
+        if(user.getAddress() !=null && user.getAddress() != userToBeUpdated.getAddress()){
             userToBeUpdated.setAddress(user.getAddress());
         }
-        if(!user.getEmail().equals(userToBeUpdated.getEmail())){
+        if(user.getEmail() !=null && !user.getEmail().equals(userToBeUpdated.getEmail())){
             userToBeUpdated.setEmail(user.getEmail());
         }
-        if(!user.getFirstName().equals(userToBeUpdated.getFirstName())){
+        if(user.getFirstName() !=null && !user.getFirstName().equals(userToBeUpdated.getFirstName())){
             userToBeUpdated.setFirstName(user.getFirstName());
         }
-        if(!user.getLastName().equals(userToBeUpdated.getLastName())){
+        if(user.getLastName() !=null && !user.getLastName().equals(userToBeUpdated.getLastName())){
             userToBeUpdated.setLastName(user.getLastName());
         }
-        if(!user.getPassword().equals(userToBeUpdated.getPassword())){
+        if(user.getPassword() !=null && !user.getPassword().equals(userToBeUpdated.getPassword())){
             userToBeUpdated.setPassword(user.getPassword());
+        }
+        if(user.getPaymentMethods() !=null && user.getPaymentMethods() != userToBeUpdated.getPaymentMethods()){
+            userToBeUpdated.setPaymentMethods(user.getPaymentMethods());
         }
         return dao.save(userToBeUpdated);
     }

@@ -32,7 +32,8 @@ public class UserController {
 
     @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
     public User updateUser(@PathVariable Long id, User user){
-        return userService.updateUser(id, user);
+        User userToBeUpdated = userService.findById(id);
+        return userService.updateUser(userToBeUpdated, user);
     }
 
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.POST)

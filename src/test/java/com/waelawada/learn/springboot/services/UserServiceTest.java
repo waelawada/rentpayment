@@ -80,5 +80,21 @@ public class UserServiceTest {
         assertEquals(listSizeBeforeInserting+1 , paymentMethods.size());
     }
 
+    @Test
+    @Transactional
+    public void testUpdateUsersFirstName(){
+        User user = userService.save(Users.getUserWithAddressWithPayments());
+        User updatedData = new User();
+        updatedData.setFirstName("Test");
+        User updatedUser = userService.updateUser(user, updatedData);
+
+        assertEquals(updatedData.getFirstName(), updatedUser.getFirstName());
+        assertEquals(user.getLastName(), updatedUser.getLastName());
+        assertEquals(user.getAddress(), updatedUser.getAddress());
+        assertEquals(user.getEmail(), updatedUser.getEmail());
+        assertEquals(user.getPassword(), updatedUser.getPassword());
+        assertEquals(user.getPaymentMethods(), updatedUser.getPaymentMethods());
+    }
+
 
 }
