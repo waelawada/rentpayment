@@ -18,17 +18,17 @@ public class Application {
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
-        UserDao userDao = ctx.getBean(UserDao.class);
-
-        User sampleUser = new User();
-        sampleUser.setId(1L);
-        sampleUser.setEmail("mypersonal@email.com");
-        sampleUser.setJoinDate(new Date());
-        sampleUser.setLastLogin(new Date());
-        sampleUser.setName("Wael Awada");
-        sampleUser.setPassword("hellopassword");
-
-        userDao.save(sampleUser);
+//        UserDao userDao = ctx.getBean(UserDao.class);
+//
+//        User sampleUser = new User();
+//        sampleUser.setId(1L);
+//        sampleUser.setEmail("mypersonal@email.com");
+//        sampleUser.setJoinDate(new Date());
+//        sampleUser.setLastLogin(new Date());
+//        sampleUser.setFirstName("Wael Awada");
+//        sampleUser.setPassword("hellopassword");
+//
+//        userDao.save(sampleUser);
 
         System.out.println("Let's inspect the beans provided by Spring Boot:");
 
