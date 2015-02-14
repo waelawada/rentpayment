@@ -8,6 +8,7 @@ import com.waelawada.learn.springboot.domain.User;
 import com.waelawada.learn.springboot.domain.billing.BankAccount;
 import com.waelawada.learn.springboot.domain.billing.CreditCard;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
+import com.waelawada.learn.springboot.util.Addresses;
 import com.waelawada.learn.springboot.util.Users;
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.junit.Before;
@@ -91,6 +92,22 @@ public class UserServiceTest {
         assertEquals(updatedData.getFirstName(), updatedUser.getFirstName());
         assertEquals(user.getLastName(), updatedUser.getLastName());
         assertEquals(user.getAddress(), updatedUser.getAddress());
+        assertEquals(user.getEmail(), updatedUser.getEmail());
+        assertEquals(user.getPassword(), updatedUser.getPassword());
+        assertEquals(user.getPaymentMethods(), updatedUser.getPaymentMethods());
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateUsersAddress(){
+        User user = userService.save(Users.getUserWithAddressWithPayments());
+        User updatedData = new User();
+        updatedData.setAddress(Addresses.getAddress());
+        User updatedUser = userService.updateUser(user, updatedData);
+
+        assertEquals(user.getFirstName(), updatedUser.getFirstName());
+        assertEquals(user.getLastName(), updatedUser.getLastName());
+        assertEquals(updatedData.getAddress(), updatedUser.getAddress());
         assertEquals(user.getEmail(), updatedUser.getEmail());
         assertEquals(user.getPassword(), updatedUser.getPassword());
         assertEquals(user.getPaymentMethods(), updatedUser.getPaymentMethods());

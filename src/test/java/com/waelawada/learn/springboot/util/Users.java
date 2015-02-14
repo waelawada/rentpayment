@@ -27,14 +27,7 @@ public class Users {
 
     public static User getUserWithAddressWithoutPayments(){
         User user = getUserWithoutAddressWithoutPayments();
-
-        Address address = new Address();
-        address.setCountry("US");
-        address.setStreetAddress(dataFactory.getAddress());
-        address.setCountry(dataFactory.getCity());
-        address.setState(dataFactory.getRandomChars(2));
-        address.setZipCode(dataFactory.getNumberText(5));
-
+        Address address = Addresses.getAddress();
         user.setAddress(address);
         return user;
     }

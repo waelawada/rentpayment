@@ -82,7 +82,8 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "streetAddress='" + streetAddress + '\'' +
+                "id=" + id +
+                ", streetAddress='" + streetAddress + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipCode='" + zipCode + '\'' +
@@ -93,13 +94,12 @@ public class Address {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Address)) return false;
 
         Address address = (Address) o;
 
         if (city != null ? !city.equals(address.city) : address.city != null) return false;
         if (country != null ? !country.equals(address.country) : address.country != null) return false;
-        if (id != null ? !id.equals(address.id) : address.id != null) return false;
         if (state != null ? !state.equals(address.state) : address.state != null) return false;
         if (streetAddress != null ? !streetAddress.equals(address.streetAddress) : address.streetAddress != null)
             return false;
@@ -110,8 +110,7 @@ public class Address {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (streetAddress != null ? streetAddress.hashCode() : 0);
+        int result = streetAddress != null ? streetAddress.hashCode() : 0;
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (zipCode != null ? zipCode.hashCode() : 0);

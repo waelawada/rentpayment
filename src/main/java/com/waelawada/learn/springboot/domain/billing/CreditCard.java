@@ -70,4 +70,33 @@ public class CreditCard extends PaymentMethod {
                 ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CreditCard)) return false;
+
+        CreditCard that = (CreditCard) o;
+
+        if (billingAddress != null ? !billingAddress.equals(that.billingAddress) : that.billingAddress != null)
+            return false;
+        if (creditCardNumber != null ? !creditCardNumber.equals(that.creditCardNumber) : that.creditCardNumber != null)
+            return false;
+        if (cvv2 != null ? !cvv2.equals(that.cvv2) : that.cvv2 != null) return false;
+        if (expirationDate != null ? !expirationDate.equals(that.expirationDate) : that.expirationDate != null)
+            return false;
+        if (token != null ? !token.equals(that.token) : that.token != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = creditCardNumber != null ? creditCardNumber.hashCode() : 0;
+        result = 31 * result + (expirationDate != null ? expirationDate.hashCode() : 0);
+        result = 31 * result + (cvv2 != null ? cvv2.hashCode() : 0);
+        result = 31 * result + (billingAddress != null ? billingAddress.hashCode() : 0);
+        result = 31 * result + (token != null ? token.hashCode() : 0);
+        return result;
+    }
 }
