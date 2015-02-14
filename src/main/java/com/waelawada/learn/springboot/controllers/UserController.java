@@ -20,9 +20,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AddressDao addressDao;
-
     @RequestMapping(value = "/{id}")
     public User index(@PathVariable Long id) {
         return userService.findById(id);
@@ -54,6 +51,4 @@ public class UserController {
     public Boolean deletePaymentMethod(@PathVariable Long id, Long paymentMethodId){
         return userService.removePaymentMethodForUser(id, paymentMethodId);
     }
-
-
 }
