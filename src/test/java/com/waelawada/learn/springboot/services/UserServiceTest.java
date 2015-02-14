@@ -8,6 +8,8 @@ import com.waelawada.learn.springboot.domain.User;
 import com.waelawada.learn.springboot.domain.billing.BankAccount;
 import com.waelawada.learn.springboot.domain.billing.CreditCard;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
+import com.waelawada.learn.springboot.util.Users;
+import org.fluttercode.datafactory.impl.DataFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -46,37 +49,7 @@ public class UserServiceTest {
     @Transactional
     public void testSaveUser(){
 
-        User user = new User();
-        user.setFirstName("Wael");
-        user.setLastName("Awada");
-        user.setPassword("password");
-        user.setEmail("waelawada@gmail.com");
-
-
-        Address address = new Address();
-        address.setStreetAddress("1908 NW 96th Ave");
-        address.setCity("Beirut");
-        address.setState("GA");
-        address.setZipCode("30908");
-        address.setCountry("US");
-
-        user.setAddress(address);
-
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setAccountNumber("1234567890");
-        bankAccount.setRoutingNumber("123123123");
-        paymentMethodDao.save(bankAccount);
-
-        CreditCard creditCard = new CreditCard();
-        creditCard.setCreditCardNumber("1234567890123456");
-        creditCard.setExpirationDate("0515");
-        creditCard.setCvv2("019");
-        creditCard.setToken("123456789");
-        creditCard.setBillingAddress(address);
-        paymentMethodDao.save(creditCard);
-
-        List<PaymentMethod> paymentMethods = Arrays.asList(bankAccount, creditCard);
-        user.setPaymentMethods(paymentMethods);
+        User user = Users.getUserWithAddressWithPayments();
 
         User savedUser = userService.save(user);
 
@@ -88,6 +61,23 @@ public class UserServiceTest {
 
         assertEquals(savedUser, userService.findById(savedUser.getId()));
 
+    }
+
+    @Test
+    @Transactional
+    public void testAddingAPaymentMethodToUser(){
+
+        User user = userService.save(Users.getUserWithAddressWithPayments());
+        List<PaymentMethod> paymentMethods = user.getPaymentMethods();
+        int listSizeBeforeInserting = paymentMethods.size();
+
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setRoutingNumber("234234234");
+        bankAccount.setAccountNumber("345345345");
+
+        userService.addPaymentMethodToUser(user, bankAccount);
+        paymentMethods = user.getPaymentMethods();
+        assertEquals(listSizeBeforeInserting+1 , paymentMethods.size());
     }
 
 

@@ -7,6 +7,8 @@ import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by waelawada on 2/13/15.
  */
@@ -42,7 +44,9 @@ public class UserService extends GenericService<User, UserDao> {
     }
 
     public User addPaymentMethodToUser(User user, PaymentMethod paymentMethod){
-        user.getPaymentMethods().add(paymentMethod);
+        List<PaymentMethod> paymentMethods = user.getPaymentMethods();
+        paymentMethods.add(paymentMethod);
+        user.setPaymentMethods(paymentMethods);
         return save(user);
     }
 
