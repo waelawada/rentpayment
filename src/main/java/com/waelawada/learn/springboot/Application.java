@@ -1,10 +1,5 @@
 package com.waelawada.learn.springboot;
 
-import java.util.Arrays;
-import java.util.Date;
-
-import com.waelawada.learn.springboot.dao.UserDao;
-import com.waelawada.learn.springboot.domain.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -12,6 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableAutoConfiguration

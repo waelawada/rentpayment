@@ -1,6 +1,8 @@
 package com.waelawada.learn.springboot.domain.billing;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by waelawada on 2/12/15.

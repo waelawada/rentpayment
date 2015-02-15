@@ -2,17 +2,12 @@ package com.waelawada.learn.springboot.services;
 
 import com.waelawada.learn.springboot.Application;
 import com.waelawada.learn.springboot.dao.PaymentMethodDao;
-import com.waelawada.learn.springboot.dao.UserDao;
-import com.waelawada.learn.springboot.domain.Address;
 import com.waelawada.learn.springboot.domain.User;
 import com.waelawada.learn.springboot.domain.billing.BankAccount;
-import com.waelawada.learn.springboot.domain.billing.CreditCard;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
 import com.waelawada.learn.springboot.util.Addresses;
 import com.waelawada.learn.springboot.util.Users;
-import org.fluttercode.datafactory.impl.DataFactory;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +15,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 /**
  * Created by waelawada on 2/13/15.
  */

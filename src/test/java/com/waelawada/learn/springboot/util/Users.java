@@ -4,7 +4,6 @@ import com.waelawada.learn.springboot.domain.Address;
 import com.waelawada.learn.springboot.domain.User;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
 import org.fluttercode.datafactory.impl.DataFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.LinkedList;

@@ -1,7 +1,5 @@
 package com.waelawada.learn.springboot.controllers;
 
-import com.waelawada.learn.springboot.dao.AddressDao;
-import com.waelawada.learn.springboot.dao.UserDao;
 import com.waelawada.learn.springboot.domain.User;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
 import com.waelawada.learn.springboot.services.UserService;
