@@ -2,7 +2,8 @@ package com.waelawada.learn.springboot.services;
 
 import com.waelawada.learn.springboot.Application;
 import com.waelawada.learn.springboot.dao.PaymentMethodDao;
-import com.waelawada.learn.springboot.domain.User;
+import com.waelawada.learn.springboot.domain.users.ResidentUser;
+import com.waelawada.learn.springboot.domain.users.User;
 import com.waelawada.learn.springboot.domain.billing.BankAccount;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
 import com.waelawada.learn.springboot.util.Addresses;
@@ -43,15 +44,21 @@ public class UserServiceTest {
     @Transactional
     public void testSaveUser(){
 
-        User user = Users.getUserWithAddressWithPayments();
+        ResidentUser user = (ResidentUser)Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT);
 
-        User savedUser = userService.save(user);
+        ResidentUser savedUser = (ResidentUser)userService.save(user);
 
-        assertEquals("Count of rows didn't change", new Long(count+1) , userService.getCount());
+        assertEquals("Count of rows didn't change", new Long(count + 1), userService.getCount());
 
         User userInDb = userService.findById(savedUser.getId());
         userInDb.getAddress();
-        userInDb.getPaymentMethods();
+        ((ResidentUser)userInDb).getPaymentMethods();
+
+        List<User> users = (List<User>) userService.dao.findAll();
+        for (User user1 : users) {
+            System.out.println(user1.toString());
+        }
+
 
         assertEquals(savedUser, userService.findById(savedUser.getId()));
 
@@ -61,7 +68,7 @@ public class UserServiceTest {
     @Transactional
     public void testAddingAPaymentMethodToUser(){
 
-        User user = userService.save(Users.getUserWithAddressWithPayments());
+        ResidentUser user = (ResidentUser)userService.save(Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT));
         List<PaymentMethod> paymentMethods = user.getPaymentMethods();
         int listSizeBeforeInserting = paymentMethods.size();
 
@@ -77,10 +84,10 @@ public class UserServiceTest {
     @Test
     @Transactional
     public void testUpdateUsersFirstName(){
-        User user = userService.save(Users.getUserWithAddressWithPayments());
-        User updatedData = new User();
+        ResidentUser user = (ResidentUser)userService.save(Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT));
+        ResidentUser updatedData = new ResidentUser();
         updatedData.setFirstName("Test");
-        User updatedUser = userService.updateUser(user, updatedData);
+        ResidentUser updatedUser = (ResidentUser)userService.updateUser(user, updatedData);
 
         assertEquals(updatedData.getFirstName(), updatedUser.getFirstName());
         assertEquals(user.getLastName(), updatedUser.getLastName());
@@ -93,10 +100,10 @@ public class UserServiceTest {
     @Test
     @Transactional
     public void testUpdateUsersAddress(){
-        User user = userService.save(Users.getUserWithAddressWithPayments());
-        User updatedData = new User();
+        ResidentUser user = (ResidentUser)userService.save(Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT));
+        ResidentUser updatedData = new ResidentUser();
         updatedData.setAddress(Addresses.getAddress());
-        User updatedUser = userService.updateUser(user, updatedData);
+        ResidentUser updatedUser = (ResidentUser)userService.updateUser(user, updatedData);
 
         assertEquals(user.getFirstName(), updatedUser.getFirstName());
         assertEquals(user.getLastName(), updatedUser.getLastName());
@@ -105,6 +112,4 @@ public class UserServiceTest {
         assertEquals(user.getPassword(), updatedUser.getPassword());
         assertEquals(user.getPaymentMethods(), updatedUser.getPaymentMethods());
     }
-
-
 }

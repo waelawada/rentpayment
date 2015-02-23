@@ -1,5 +1,7 @@
 package com.waelawada.learn.springboot.domain.billing;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,6 +12,7 @@ import javax.persistence.Table;
 @Entity
 @DiscriminatorValue("bank_account")
 @Table(name = "bank_account")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BankAccount extends PaymentMethod {
 
     private String routingNumber;

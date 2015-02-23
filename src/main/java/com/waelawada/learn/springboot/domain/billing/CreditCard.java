@@ -1,5 +1,6 @@
 package com.waelawada.learn.springboot.domain.billing;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.waelawada.learn.springboot.domain.Address;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @DiscriminatorValue("credit_card")
 @Table(name = "credit_card")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CreditCard extends PaymentMethod {
 
     private String creditCardNumber;

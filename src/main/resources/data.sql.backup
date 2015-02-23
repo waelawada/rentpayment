@@ -1,0 +1,49 @@
+-- INSERT INTO `address` (`id`, `city`, `country`, `state`, `street_address`, `zip_code`)
+-- VALUES
+-- 	(1, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(2, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(3, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(4, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(5, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(6, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(7, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(8, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(9, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080'),
+-- 	(10, 'Smyrna', 'US', 'GA', '1024 Vinings Pkwy SE', '30080');
+--
+--
+-- INSERT INTO `apartment` (`id`, `apartment_id`, `monthly_rent`, `address_id`, `community_id`, `resident_id`)
+-- VALUES
+-- 	(1, '1024', 990, 5, 1, 1);
+--
+--
+-- INSERT INTO `community` (`id`, `name`, `address_id`)
+-- VALUES
+-- 	(1, 'Rock Creek', 3),
+-- 	(2, 'Bella Vista', 4);
+--
+--
+-- INSERT INTO `credit_card` (`credit_card_number`, `cvv2`, `expiration_date`, `token`, `id`, `address_id`)
+-- VALUES
+-- 	('3795201236521', '2233', '10/18', NULL, 12, 6);
+--
+--
+-- INSERT INTO `manager_user` (`id`, `community_id`)
+-- VALUES
+-- 	(2, 1);
+--
+--
+-- INSERT INTO `payment_method` (`payment_method`, `id`, `user_id`)
+-- VALUES
+-- 	('credit_card', 12, 1);
+--
+--
+-- INSERT INTO `resident_user` (`id`)
+-- VALUES
+-- 	(1);
+--
+--
+-- INSERT INTO `user` (`user_type`, `id`, `email`, `first_name`, `join_date`, `last_login`, `last_name`, `updated_date`, `password`, `address_id`)
+-- VALUES
+-- 	('resident', 1, 'waelawada@gmail.com', 'Wael', NULL, NULL, 'Awada', NULL, 'hello', 1),
+-- 	('manager', 2, 'manger@user.com', 'Manager', NULL, NULL, 'LastName', NULL, 'iammanager', 2);

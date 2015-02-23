@@ -4,17 +4,11 @@ import com.stripe.Stripe;
 import com.stripe.exception.*;
 import com.stripe.model.Charge;
 import com.stripe.model.Token;
-import com.waelawada.learn.springboot.services.cardpayment.requests.CardPaymentRequest;
-import com.waelawada.learn.springboot.services.cardpayment.responses.CardPaymentResponse;
+import com.waelawada.learn.springboot.domain.cardpayment.requests.CardPaymentRequest;
+import com.waelawada.learn.springboot.domain.cardpayment.responses.CardPaymentResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-
-import javax.smartcardio.Card;
-import javax.validation.constraints.NotNull;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by waelawada on 2/14/15.
@@ -22,7 +16,6 @@ import java.util.Objects;
 @PropertySource("classpath:application.properties")
 @Service
 public class StripeService implements GatewayService {
-
 
     private String apiKey;
     public static String TRANSACTION_ID_CONSTANT = "transactionId";

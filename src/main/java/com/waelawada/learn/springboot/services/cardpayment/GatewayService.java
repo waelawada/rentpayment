@@ -1,7 +1,7 @@
 package com.waelawada.learn.springboot.services.cardpayment;
 
-import com.waelawada.learn.springboot.services.cardpayment.requests.CardPaymentRequest;
-import com.waelawada.learn.springboot.services.cardpayment.responses.CardPaymentResponse;
+import com.waelawada.learn.springboot.domain.cardpayment.requests.CardPaymentRequest;
+import com.waelawada.learn.springboot.domain.cardpayment.responses.CardPaymentResponse;
 
 /**
  * Created by waelawada on 2/15/15.

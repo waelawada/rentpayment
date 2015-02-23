@@ -1,12 +1,15 @@
 package com.waelawada.learn.springboot.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 /**
  * Created by waelawada on 2/9/15.
  */
 @Entity
-@Table(name = "user_address")
+@Table(name = "address")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address {
 
     @Id

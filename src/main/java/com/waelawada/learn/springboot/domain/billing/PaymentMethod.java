@@ -1,5 +1,7 @@
 package com.waelawada.learn.springboot.domain.billing;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 /**
@@ -9,6 +11,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="PAYMENT_METHOD")
 @Table(name="payment_method")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,7 +1,13 @@
 package com.waelawada.learn.springboot.controllers;
 
-import com.waelawada.learn.springboot.domain.User;
+import com.waelawada.learn.springboot.converters.UserConverter;
+import com.waelawada.learn.springboot.domain.users.ManagerUser;
+import com.waelawada.learn.springboot.domain.users.ResidentUser;
+import com.waelawada.learn.springboot.domain.users.User;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
+import com.waelawada.learn.springboot.dto.users.FullManagerDto;
+import com.waelawada.learn.springboot.dto.users.FullResidentDto;
+import com.waelawada.learn.springboot.dto.users.UserDto;
 import com.waelawada.learn.springboot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +25,15 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/{id}")
-    public User index(@PathVariable Long id) {
-        return userService.findById(id);
+    public UserDto index(@PathVariable Long id) {
+        User user = userService.findById(id);
+        if(user instanceof ManagerUser){
+            return UserConverter.convertEntityToDto(user, FullManagerDto.class);
+        }
+        else if(user instanceof ResidentUser){
+            return UserConverter.convertEntityToDto(user, FullResidentDto.class);
+        }
+        return null;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -36,13 +49,13 @@ public class UserController {
 
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.POST)
     public User addPaymentMethodToUser(@PathVariable Long id, PaymentMethod paymentMethod){
-        User user = userService.findById(id);
+        ResidentUser user = (ResidentUser)userService.findById(id);
         return userService.addPaymentMethodToUser(user, paymentMethod);
     }
 
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.GET)
-    public List<PaymentMethod> getPaymentMethodsByUser(@PathVariable Long id){
-        User user = userService.findById(id);
+    public List<PaymentMethod> getPaymentMethodsByResidentUser(@PathVariable Long id){
+        ResidentUser user = (ResidentUser)userService.findById(id);
         return user.getPaymentMethods();
     }
 
