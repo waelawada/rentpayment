@@ -1,11 +1,17 @@
 package com.waelawada.learn.springboot.controllers;
 
+import com.waelawada.learn.springboot.converters.ApartmentConverter;
 import com.waelawada.learn.springboot.converters.CommunityConverter;
+import com.waelawada.learn.springboot.converters.UserConverter;
 import com.waelawada.learn.springboot.domain.community.Apartment;
 import com.waelawada.learn.springboot.domain.community.Community;
 import com.waelawada.learn.springboot.domain.users.ManagerUser;
+import com.waelawada.learn.springboot.dto.apartments.ApartmentDto;
+import com.waelawada.learn.springboot.dto.apartments.FullApartmentDto;
 import com.waelawada.learn.springboot.dto.community.CommunityDto;
 import com.waelawada.learn.springboot.dto.community.FullCommunityDto;
+import com.waelawada.learn.springboot.dto.users.FullManagerDto;
+import com.waelawada.learn.springboot.dto.users.UserDto;
 import com.waelawada.learn.springboot.services.ApartmentService;
 import com.waelawada.learn.springboot.services.CommunityService;
 import com.waelawada.learn.springboot.services.UserService;
@@ -14,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.waelawada.learn.springboot.converters.CommunityConverter.convertEntityToDto;
 
 /**
  * Created by waelawada on 2/21/15.
@@ -38,16 +46,16 @@ public class CommunityController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public CommunityDto getCommunity(@PathVariable Long id){
-        return CommunityConverter.convertEntityToDto(communityService.findById(id), FullCommunityDto.class);
+        return convertEntityToDto(communityService.findById(id), FullCommunityDto.class);
     }
 
     @RequestMapping(value="/", method = RequestMethod.GET)
-    public List<? extends CommunityDto> getAllCommunities(){
+    public List<CommunityDto> getAllCommunities(){
         return CommunityConverter.convertEntityListToDtoList(communityService.findAll(), FullCommunityDto.class);
     }
 
     @RequestMapping(value = "{id}/managers/", method = RequestMethod.POST)
-    public Community addManagerToCommunity(@PathVariable Long id, ManagerUser managerUser){
+    public CommunityDto addManagerToCommunity(@PathVariable Long id, ManagerUser managerUser){
         Community community = communityService.findById(id);
         if(managerUser!=null && managerUser.getId()>0){
             managerUser = (ManagerUser)userService.findById(managerUser.getId());
@@ -56,26 +64,26 @@ public class CommunityController {
             managerUser = (ManagerUser) userService.save(managerUser);
         }
         community.getManagers().add(managerUser);
-        return communityService.save(community);
+        return convertEntityToDto(communityService.save(community), FullCommunityDto.class);
     }
 
     @RequestMapping(value = "{id}/managers/", method = RequestMethod.DELETE)
-    public Community removeManagerFromCommunity(@PathVariable Long id, @RequestParam Long managerId){
+    public CommunityDto removeManagerFromCommunity(@PathVariable Long id, @RequestParam Long managerId){
         ManagerUser managerUser = (ManagerUser) userService.findById(managerId);
         Community community = communityService.findById(id);
         community.getManagers().remove(managerUser);
         community = communityService.save(community);
-        return community;
+        return convertEntityToDto(community, FullCommunityDto.class);
     }
 
     @RequestMapping(value = "{id}/managers/", method = RequestMethod.GET)
-    public List<ManagerUser> getAllManagersForACommunity(@PathVariable Long id){
+    public List<UserDto> getAllManagersForACommunity(@PathVariable Long id){
         Community community = communityService.findById(id);
-        return community.getManagers();
+        return UserConverter.convertEntityListToDtoList(community.getManagers(), FullManagerDto.class);
     }
 
     @RequestMapping(value = "{id}/apartments/", method = RequestMethod.POST)
-    public Community addApartmentToCommunity(@PathVariable Long communityId, Apartment apartment){
+    public CommunityDto addApartmentToCommunity(@PathVariable Long communityId, Apartment apartment){
         if(apartment!=null && apartment.getId()>0){
             apartment = apartmentService.findById(apartment.getId());
         }
@@ -84,20 +92,20 @@ public class CommunityController {
         }
         Community community = communityService.findById(communityId);
         community.getApartments().add(apartment);
-        return communityService.save(community);
+        return convertEntityToDto(communityService.save(community), FullCommunityDto.class);
     }
 
     @RequestMapping(value = "{id}/apartments/", method = RequestMethod.DELETE)
-    public Community removeApartmentFromCommunity(@PathVariable Long id, @RequestParam Long apartmentId){
+    public CommunityDto removeApartmentFromCommunity(@PathVariable Long id, @RequestParam Long apartmentId){
         Apartment apartment = apartmentService.findById(apartmentId);
         Community community = communityService.findById(id);
         community.getApartments().remove(apartment);
-        return communityService.save(community);
+        return convertEntityToDto(communityService.save(community), FullCommunityDto.class);
     }
 
     @RequestMapping(value = "{id}/apartments/", method = RequestMethod.GET)
-    public List<Apartment> getAllApartmentForACommunity(@PathVariable Long id){
+    public List<ApartmentDto> getAllApartmentForACommunity(@PathVariable Long id){
         Community community = communityService.findById(id);
-        return community.getApartments();
+        return ApartmentConverter.convertEntityListToDtoList(community.getApartments(), FullApartmentDto.class);
     }
 }

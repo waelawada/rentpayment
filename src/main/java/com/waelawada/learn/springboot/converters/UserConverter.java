@@ -114,10 +114,10 @@ public class UserConverter {
         return users;
     }
 
-    public static <T extends User, U extends UserDto> List<U> convertEntityListToDtoList(List<T> users, Class<U> targetClass){
-        List<U> userDtos = new LinkedList<U>();
+    public static List<UserDto> convertEntityListToDtoList(List<? extends User> users, Class<? extends UserDto> targetClass){
+        List<UserDto> userDtos = new LinkedList<UserDto>();
         for (User user : users) {
-            userDtos.add((U)convertEntityToDto(user, targetClass));
+            userDtos.add(convertEntityToDto(user, targetClass));
         }
         return userDtos;
     }

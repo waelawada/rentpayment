@@ -79,10 +79,10 @@ public class ApartmentConverter {
         return apartments;
     }
 
-    public static <T extends ApartmentDto, U extends Apartment> List<T> convertEntityListToDtoList(List<U> apartments, Class<T> targetClass){
-        List<T> apartmentDtos = new LinkedList<T>();
+    public static List<ApartmentDto> convertEntityListToDtoList(List<Apartment> apartments, Class<? extends ApartmentDto> targetClass){
+        List<ApartmentDto> apartmentDtos = new LinkedList<ApartmentDto>();
         for (Apartment apartment : apartments) {
-            apartmentDtos.add((T)convertEntityToDto(apartment, targetClass));
+            apartmentDtos.add(convertEntityToDto(apartment, targetClass));
         }
         return apartmentDtos;
     }

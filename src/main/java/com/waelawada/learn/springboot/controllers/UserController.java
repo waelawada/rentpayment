@@ -27,30 +27,34 @@ public class UserController {
     @RequestMapping(value = "/{id}")
     public UserDto index(@PathVariable Long id) {
         User user = userService.findById(id);
-        if(user instanceof ManagerUser){
-            return UserConverter.convertEntityToDto(user, FullManagerDto.class);
-        }
-        else if(user instanceof ResidentUser){
-            return UserConverter.convertEntityToDto(user, FullResidentDto.class);
-        }
-        return null;
+        return getUserDto(user);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public User addUser(User user){
-        return userService.save(user);
+    public UserDto addUser(User user){
+        return getUserDto(userService.save(user));
     }
 
     @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
-    public User updateUser(@PathVariable Long id, User user){
+    public UserDto updateUser(@PathVariable Long id, User user){
         User userToBeUpdated = userService.findById(id);
-        return userService.updateUser(userToBeUpdated, user);
+        User updatedUser = userService.updateUser(userToBeUpdated, user);
+        return getUserDto(updatedUser);
+    }
+
+    private UserDto getUserDto(User updatedUser) {
+        if(updatedUser instanceof ManagerUser){
+            return UserConverter.convertEntityToDto(updatedUser, FullManagerDto.class);
+        }
+        else{
+            return UserConverter.convertEntityToDto(updatedUser, FullResidentDto.class);
+        }
     }
 
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.POST)
-    public User addPaymentMethodToUser(@PathVariable Long id, PaymentMethod paymentMethod){
+    public UserDto addPaymentMethodToUser(@PathVariable Long id, PaymentMethod paymentMethod){
         ResidentUser user = (ResidentUser)userService.findById(id);
-        return userService.addPaymentMethodToUser(user, paymentMethod);
+        return getUserDto(userService.addPaymentMethodToUser(user, paymentMethod));
     }
 
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.GET)

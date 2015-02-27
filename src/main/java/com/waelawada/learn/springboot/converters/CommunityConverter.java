@@ -1,6 +1,5 @@
 package com.waelawada.learn.springboot.converters;
 
-import com.waelawada.learn.springboot.domain.community.Apartment;
 import com.waelawada.learn.springboot.domain.community.Community;
 import com.waelawada.learn.springboot.domain.users.ManagerUser;
 import com.waelawada.learn.springboot.dto.apartments.FullCommunityApartmentDto;
@@ -51,16 +50,25 @@ public class CommunityConverter {
             }
             else if(communityDtoClass == getClassByClassName("FullCommunityDto")){
                 communityDto = new FullCommunityDto();
-                ((FullCommunityDto) communityDto).setApartments(ApartmentConverter.convertEntityListToDtoList(community.getApartments(), FullCommunityApartmentDto.class));
-                ((FullCommunityDto) communityDto).setManagers(UserConverter.convertEntityListToDtoList(community.getManagers(), FullCommunityManagerDto.class));
+                ((FullCommunityDto) communityDto).setApartments(
+                        (List<FullCommunityApartmentDto>)(List<?>)
+                                ApartmentConverter.convertEntityListToDtoList(
+                                        community.getApartments(), FullCommunityApartmentDto.class));
+                ((FullCommunityDto) communityDto).setManagers(
+                        (List<FullCommunityManagerDto>)(List<?>)
+                                UserConverter.convertEntityListToDtoList(community.getManagers(), FullCommunityManagerDto.class));
             }
             else if(communityDtoClass == getClassByClassName("FullManagerCommunityDto")){
                 communityDto = new FullManagerCommunityDto();
-                ((FullManagerCommunityDto) communityDto).setApartments(ApartmentConverter.convertEntityListToDtoList(community.getApartments(), FullManagerCommunityApartmentDto.class));
+                ((FullManagerCommunityDto) communityDto).setApartments(
+                        (List<FullManagerCommunityApartmentDto>)(List<?>)
+                                ApartmentConverter.convertEntityListToDtoList(community.getApartments(), FullManagerCommunityApartmentDto.class));
             }
             else if(communityDtoClass == getClassByClassName("FullResidentApartmentCommunityDto")){
                 communityDto = new FullResidentApartmentCommunityDto();
-                ((FullResidentApartmentCommunityDto) communityDto).setManagers(UserConverter.convertEntityListToDtoList(community.getManagers(), FullResidentApartmentCommunityManagerDto.class));
+                ((FullResidentApartmentCommunityDto) communityDto).setManagers(
+                        (List<FullResidentApartmentCommunityManagerDto>)(List<?>)
+                                UserConverter.convertEntityListToDtoList(community.getManagers(), FullResidentApartmentCommunityManagerDto.class));
             }
             communityDto.setAddress(community.getAddress());
             communityDto.setName(community.getName());
@@ -84,10 +92,10 @@ public class CommunityConverter {
         return communities;
     }
 
-    public static <T extends CommunityDto> List<T> convertEntityListToDtoList(List<Community> communities, Class<T> targetClass){
-        List<T> communityDtos = new LinkedList<T>();
+    public static List<CommunityDto> convertEntityListToDtoList(List<Community> communities, Class<? extends CommunityDto> targetClass){
+        List<CommunityDto> communityDtos = new LinkedList<CommunityDto>();
         for (Community community : communities) {
-            communityDtos.add((T)convertEntityToDto(community, targetClass));
+            communityDtos.add(convertEntityToDto(community, targetClass));
         }
         return communityDtos;
     }
