@@ -12,10 +12,14 @@ import com.waelawada.learn.springboot.dto.community.CommunityDto;
 import com.waelawada.learn.springboot.dto.community.FullCommunityDto;
 import com.waelawada.learn.springboot.dto.users.FullManagerDto;
 import com.waelawada.learn.springboot.dto.users.UserDto;
+import com.waelawada.learn.springboot.exception.ApplicationError;
+import com.waelawada.learn.springboot.exception.apartment.ApartmentNotFoundException;
+import com.waelawada.learn.springboot.exception.community.CommunityNotFoundException;
 import com.waelawada.learn.springboot.services.ApartmentService;
 import com.waelawada.learn.springboot.services.CommunityService;
 import com.waelawada.learn.springboot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +50,9 @@ public class CommunityController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public CommunityDto getCommunity(@PathVariable Long id){
-        return convertEntityToDto(communityService.findById(id), FullCommunityDto.class);
+        Community community = communityService.findById(id);
+        if(community == null) throw new CommunityNotFoundException(id);
+        return convertEntityToDto(community, FullCommunityDto.class);
     }
 
     @RequestMapping(value="/", method = RequestMethod.GET)
@@ -107,5 +113,14 @@ public class CommunityController {
     public List<ApartmentDto> getAllApartmentForACommunity(@PathVariable Long id){
         Community community = communityService.findById(id);
         return ApartmentConverter.convertEntityListToDtoList(community.getApartments(), FullApartmentDto.class);
+    }
+
+    @ExceptionHandler(value = CommunityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApplicationError communityNotFound(CommunityNotFoundException cpe){
+        Long communityId = cpe.getObjectId();
+        String externalCommunityId= cpe.getExternalObjectId();
+        String messageId = (externalCommunityId!=null ? externalCommunityId : String.valueOf(communityId));
+        return new ApplicationError(21, "Community "+messageId+" not found");
     }
 }
