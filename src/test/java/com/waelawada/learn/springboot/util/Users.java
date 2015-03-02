@@ -22,12 +22,12 @@ public class Users {
     }
 
     public static User getUserWithoutAddressWithoutPayments(UserType userType){
-        User user = getUserByType(userType);
-        user.setFirstName(dataFactory.getFirstName());
-        user.setLastName(dataFactory.getLastName());
-        user.setPassword(dataFactory.getRandomChars(10));
-        user.setEmail(dataFactory.getEmailAddress());
-        return user;
+        User.Builder userBuilder = getUserBuilderByType(userType);
+        userBuilder.firstName(dataFactory.getFirstName());
+        userBuilder.lastName(dataFactory.getLastName());
+        userBuilder.password(dataFactory.getRandomChars(10));
+        userBuilder.email(dataFactory.getEmailAddress());
+        return userBuilder.build();
     }
 
     public static User getUserWithAddressWithoutPayments(UserType userType){
@@ -46,25 +46,25 @@ public class Users {
         return user;
     }
 
-    private static User getUserByType(UserType usertype){
+    private static User.Builder getUserBuilderByType(UserType usertype){
         if(UserType.RESIDENT == usertype){
-            return new ResidentUser();
+            return ResidentUser.newBuilder();
         }
         else if(UserType.MANAGER == usertype){
-            return new ManagerUser();
+            return ManagerUser.newBuilder();
         }
         else{
-            return getRandomUser();
+            return getRandomUserBuilder();
         }
     }
 
-    private static User getRandomUser(){
+    private static User.Builder getRandomUserBuilder(){
         double random = Math.random();
         if(random < 0.5){
-            return new ResidentUser();
+            return ResidentUser.newBuilder();
         }
         else{
-            return new ManagerUser();
+            return  ManagerUser.newBuilder();
         }
     }
 

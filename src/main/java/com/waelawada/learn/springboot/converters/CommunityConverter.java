@@ -19,25 +19,25 @@ public class CommunityConverter {
 
     public static Community convertDtoToEntity(CommunityDto communityDto){
         if(communityDto == null) return null;
-        Community community = new Community();
+        Community.Builder communityBuilder = Community.newBuilder();
         if(communityDto instanceof FullApartmentCommunityDto){
-            community.setManagers((List<ManagerUser>)(List<?>)UserConverter.convertDtoListToEntityList(((FullApartmentCommunityDto) communityDto).getManagers()));
+            communityBuilder.managers((List<ManagerUser>) (List<?>) UserConverter.convertDtoListToEntityList(((FullApartmentCommunityDto) communityDto).getManagers()));
         }
         else if(communityDto instanceof FullCommunityDto){
-            community.setManagers((List<ManagerUser>)(List<?>)UserConverter.convertDtoListToEntityList(((FullCommunityDto) communityDto).getManagers()));
+            communityBuilder.managers((List<ManagerUser>) (List<?>) UserConverter.convertDtoListToEntityList(((FullCommunityDto) communityDto).getManagers()));
 
-            community.setApartments(ApartmentConverter.convertDtoListToEntityList(((FullCommunityDto) communityDto).getApartments()));
+            communityBuilder.apartments(ApartmentConverter.convertDtoListToEntityList(((FullCommunityDto) communityDto).getApartments()));
         }
         else if(communityDto instanceof FullManagerCommunityDto){
-            community.setApartments(ApartmentConverter.convertDtoListToEntityList(((FullManagerCommunityDto) communityDto).getApartments()));
+            communityBuilder.apartments(ApartmentConverter.convertDtoListToEntityList(((FullManagerCommunityDto) communityDto).getApartments()));
         }
         else if(communityDto instanceof FullResidentApartmentCommunityDto){
-            community.setManagers((List<ManagerUser>)(List<?>)UserConverter.convertDtoListToEntityList(((FullResidentApartmentCommunityDto) communityDto).getManagers()));
+            communityBuilder.managers((List<ManagerUser>) (List<?>) UserConverter.convertDtoListToEntityList(((FullResidentApartmentCommunityDto) communityDto).getManagers()));
         }
-        community.setId(communityDto.getId());
-        community.setName(communityDto.getName());
-        community.setAddress(communityDto.getAddress());
-        return community;
+        communityBuilder.id(communityDto.getId());
+        communityBuilder.name(communityDto.getName());
+        communityBuilder.address(communityDto.getAddress());
+        return communityBuilder.build();
     }
 
     public static CommunityDto convertEntityToDto(Community community, Class communityDtoClass){

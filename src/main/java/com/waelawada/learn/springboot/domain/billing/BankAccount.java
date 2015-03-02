@@ -18,6 +18,16 @@ public class BankAccount extends PaymentMethod {
     private String routingNumber;
     private String accountNumber;
 
+    private BankAccount(Builder builder) {
+        setRoutingNumber(builder.routingNumber);
+        setAccountNumber(builder.accountNumber);
+        setId(builder.id);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public String getRoutingNumber() {
         return routingNumber;
     }
@@ -62,5 +72,34 @@ public class BankAccount extends PaymentMethod {
         int result = routingNumber != null ? routingNumber.hashCode() : 0;
         result = 31 * result + (accountNumber != null ? accountNumber.hashCode() : 0);
         return result;
+    }
+
+
+    public static final class Builder {
+        private String routingNumber;
+        private String accountNumber;
+        private Long id;
+
+        private Builder() {
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder routingNumber(String routingNumber) {
+            this.routingNumber = routingNumber;
+            return this;
+        }
+
+        public Builder accountNumber(String accountNumber) {
+            this.accountNumber = accountNumber;
+            return this;
+        }
+
+        public BankAccount build() {
+            return new BankAccount(this);
+        }
     }
 }

@@ -72,9 +72,7 @@ public class UserServiceTest {
         List<PaymentMethod> paymentMethods = user.getPaymentMethods();
         int listSizeBeforeInserting = paymentMethods.size();
 
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setRoutingNumber("234234234");
-        bankAccount.setAccountNumber("345345345");
+        BankAccount bankAccount = BankAccount.newBuilder().accountNumber("234234234").routingNumber("345345345").build();
 
         userService.addPaymentMethodToUser(user, bankAccount);
         paymentMethods = user.getPaymentMethods();
@@ -85,8 +83,7 @@ public class UserServiceTest {
     @Transactional
     public void testUpdateUsersFirstName(){
         ResidentUser user = (ResidentUser)userService.save(Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT));
-        ResidentUser updatedData = new ResidentUser();
-        updatedData.setFirstName("Test");
+        ResidentUser updatedData = ResidentUser.newBuilder().firstName("Test").build();
         ResidentUser updatedUser = (ResidentUser)userService.updateUser(user, updatedData);
 
         assertEquals(updatedData.getFirstName(), updatedUser.getFirstName());
@@ -101,8 +98,7 @@ public class UserServiceTest {
     @Transactional
     public void testUpdateUsersAddress(){
         ResidentUser user = (ResidentUser)userService.save(Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT));
-        ResidentUser updatedData = new ResidentUser();
-        updatedData.setAddress(Addresses.getAddress());
+        ResidentUser updatedData = ResidentUser.newBuilder().address(Addresses.getAddress()).build();
         ResidentUser updatedUser = (ResidentUser)userService.updateUser(user, updatedData);
 
         assertEquals(user.getFirstName(), updatedUser.getFirstName());

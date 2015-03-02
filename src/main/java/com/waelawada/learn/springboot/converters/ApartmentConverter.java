@@ -50,21 +50,21 @@ public class ApartmentConverter {
 
     public static Apartment convertDtoToEntity(ApartmentDto apartmentDto){
         if(apartmentDto == null) return null;
-        Apartment apartment = new Apartment();
-        apartment.setId(apartmentDto.getId());
-        apartment.setApartmentId(apartmentDto.getApartmentId());
-        apartment.setMonthlyRent(apartmentDto.getMonthlyRent());
-        apartment.setAddress(apartmentDto.getAddress());
+        Apartment.Builder apartmentBuilder = Apartment.newBuilder();
+        apartmentBuilder.id(apartmentDto.getId());
+        apartmentBuilder.apartmentId(apartmentDto.getApartmentId());
+        apartmentBuilder.monthlyRent(apartmentDto.getMonthlyRent());
+        apartmentBuilder.address(apartmentDto.getAddress());
         if(apartmentDto instanceof FullCommunityApartmentDto){
-            apartment.setResidentUser((ResidentUser)UserConverter.convertDtoToEntity(((FullCommunityApartmentDto) apartmentDto).getResident()));
+            apartmentBuilder.residentUser((ResidentUser)UserConverter.convertDtoToEntity(((FullCommunityApartmentDto) apartmentDto).getResident()));
         }
         else if (apartmentDto instanceof FullManagerCommunityApartmentDto){
-            apartment.setResidentUser((ResidentUser)UserConverter.convertDtoToEntity(((FullManagerCommunityApartmentDto) apartmentDto).getResident()));
+            apartmentBuilder.residentUser((ResidentUser)UserConverter.convertDtoToEntity(((FullManagerCommunityApartmentDto) apartmentDto).getResident()));
         }
         else if (apartmentDto instanceof FullResidentApartmentDto){
-            apartment.setCommunity(CommunityConverter.convertDtoToEntity(((FullResidentApartmentDto) apartmentDto).getCommunity()));
+            apartmentBuilder.community(CommunityConverter.convertDtoToEntity(((FullResidentApartmentDto) apartmentDto).getCommunity()));
         }
-        return apartment;
+        return apartmentBuilder.build();
     }
 
     private static Class getClassFromClassName(String className) throws ClassNotFoundException {

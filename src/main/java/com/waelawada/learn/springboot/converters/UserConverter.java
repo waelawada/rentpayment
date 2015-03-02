@@ -15,42 +15,40 @@ import java.util.List;
 public class UserConverter {
 
     public static User convertDtoToEntity(UserDto userDto){
-        User user = null;
         if(userDto == null) return null;
-        if(userDto instanceof FullManagerDto){
-            user = new ManagerUser();
-            ((ManagerUser)user).setCommunity(CommunityConverter.convertDtoToEntity(((FullManagerDto) userDto).getCommunity()));
+        if(userDto instanceof FullManagerDto
+                ||userDto instanceof FullApartmentCommunityManagerDto
+                || userDto instanceof FullResidentApartmentCommunityManagerDto){
+            return setVariablesForManagerDto(userDto);
         }
-        else if(userDto instanceof FullApartmentCommunityManagerDto || userDto instanceof FullResidentApartmentCommunityManagerDto){
-            user = new ManagerUser();
-        }
-        else if(userDto instanceof FullApartmentResidentDto){
-            user = new ResidentUser();
-            ((ResidentUser) user).setPaymentMethods(((FullApartmentResidentDto)userDto).getPaymentMethods());
-        }
-        else if(userDto instanceof  FullCommunityApartmentResidentDto){
-            user = new ResidentUser();
-            ((ResidentUser) user).setPaymentMethods(((FullCommunityApartmentResidentDto)userDto).getPaymentMethods());
-        }
-        else if(userDto instanceof FullManagerCommunityApartmentResidentDto){
-            user = new ResidentUser();
-            ((ResidentUser) user).setPaymentMethods(((FullManagerCommunityApartmentResidentDto)userDto).getPaymentMethods());
-        }
-        else if(userDto instanceof FullResidentDto){
-            user = new ResidentUser();
-            ((ResidentUser) user).setPaymentMethods(((FullResidentDto)userDto).getPaymentMethods());
-        }
+        else return setVariablesForResidentDto(userDto);
+    }
 
-        user.setAddress(userDto.getAddress());
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPassword(userDto.getPassword());
-        user.setJoinDate(userDto.getJoinDate());
-        user.setLastLogin(userDto.getLastLogin());
-        user.setLastUpdated(userDto.getLastUpdated());
+    private static void setVariablesInUserDto(UserDto userDto, User.Builder userBuilder) {
+        userBuilder.address(userDto.getAddress());
+        userBuilder.email(userDto.getEmail());
+        userBuilder.firstName(userDto.getFirstName());
+        userBuilder.lastName(userDto.getLastName());
+        userBuilder.password(userDto.getPassword());
+        userBuilder.joinDate(userDto.getJoinDate());
+        userBuilder.lastLogin(userDto.getLastLogin());
+        userBuilder.lastUpdated(userDto.getLastUpdated());
+    }
 
-        return user;
+    private static ManagerUser setVariablesForManagerDto(UserDto userDto){
+        ManagerUser.Builder userBuilder = ManagerUser.newBuilder();
+        if(userDto instanceof FullManagerDto) {
+            (userBuilder).community(CommunityConverter.convertDtoToEntity(((FullManagerDto) userDto).getCommunity()));
+        }
+        setVariablesInUserDto(userDto, userBuilder);
+        return userBuilder.build();
+    }
+
+    private static ResidentUser setVariablesForResidentDto(UserDto userDto){
+        ResidentUser.Builder userBuilder = ResidentUser.newBuilder();
+        (userBuilder).paymentMethods(((FullApartmentResidentDto) userDto).getPaymentMethods());
+        setVariablesInUserDto(userDto, userBuilder);
+        return userBuilder.build();
     }
 
     public static <T extends UserDto> T convertEntityToDto(User user, Class<T> targetClass){

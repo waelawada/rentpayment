@@ -22,6 +22,19 @@ public class CreditCard extends PaymentMethod {
     private Address billingAddress;
     private String token;
 
+    private CreditCard(Builder builder) {
+        setCreditCardNumber(builder.creditCardNumber);
+        setExpirationDate(builder.expirationDate);
+        setCvv2(builder.cvv2);
+        setBillingAddress(builder.billingAddress);
+        setToken(builder.token);
+        setId(builder.id);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public String getCreditCardNumber() {
         return creditCardNumber;
     }
@@ -100,5 +113,52 @@ public class CreditCard extends PaymentMethod {
         result = 31 * result + (billingAddress != null ? billingAddress.hashCode() : 0);
         result = 31 * result + (token != null ? token.hashCode() : 0);
         return result;
+    }
+
+
+    public static final class Builder {
+        private String creditCardNumber;
+        private String expirationDate;
+        private String cvv2;
+        private Address billingAddress;
+        private String token;
+        private Long id;
+
+        private Builder() {
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder creditCardNumber(String creditCardNumber) {
+            this.creditCardNumber = creditCardNumber;
+            return this;
+        }
+
+        public Builder expirationDate(String expirationDate) {
+            this.expirationDate = expirationDate;
+            return this;
+        }
+
+        public Builder cvv2(String cvv2) {
+            this.cvv2 = cvv2;
+            return this;
+        }
+
+        public Builder billingAddress(Address billingAddress) {
+            this.billingAddress = billingAddress;
+            return this;
+        }
+
+        public Builder token(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public CreditCard build() {
+            return new CreditCard(this);
+        }
     }
 }

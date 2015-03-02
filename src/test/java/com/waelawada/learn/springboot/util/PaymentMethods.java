@@ -13,27 +13,27 @@ public class PaymentMethods {
     public static DataFactory dataFactory;
 
     public static PaymentMethod getCreditCard(){
-        CreditCard creditCard = new CreditCard();
-        creditCard.setCreditCardNumber(RandomCreditCardNumberGenerator.credit_card_number(RandomCreditCardNumberGenerator.AMEX_PREFIX_LIST, 13, 1)[0]);
+        CreditCard.Builder creditCardBuilder = CreditCard.newBuilder();
+        creditCardBuilder.creditCardNumber(RandomCreditCardNumberGenerator.credit_card_number(RandomCreditCardNumberGenerator.AMEX_PREFIX_LIST, 13, 1)[0]);
         int randomMonth = (int)(Math.random()*12)+1;
         int randomYear = (int)Math.random()*40;
 
-        creditCard.setExpirationDate((randomMonth<10?"0"+randomMonth:""+randomMonth)+(randomYear<10?"0"+randomYear:""+randomYear));
+        creditCardBuilder.expirationDate((randomMonth < 10 ? "0" + randomMonth : "" + randomMonth) + (randomYear < 10 ? "0" + randomYear : "" + randomYear));
 
         int randomCvv = (int)Math.random()*1000;
-        creditCard.setCvv2((randomCvv<10? "00"+randomCvv : (
-                randomCvv<100? "0"+randomCvv: ""+randomCvv
-                )));
-        creditCard.setBillingAddress(Addresses.getAddress());
-        return creditCard;
+        creditCardBuilder.cvv2((randomCvv < 10 ? "00" + randomCvv : (
+                randomCvv < 100 ? "0" + randomCvv : "" + randomCvv
+        )));
+        creditCardBuilder.billingAddress(Addresses.getAddress());
+        return creditCardBuilder.build();
     }
 
 
     public static PaymentMethod getBankAccount(){
-        BankAccount bankAccount = new BankAccount();
-        bankAccount.setAccountNumber(String.valueOf((int) Math.random() * 1000000000));
-        bankAccount.setRoutingNumber(String.valueOf((int)Math.random()*1000000000));
-        return bankAccount;
+        BankAccount.Builder bankAccountBuilder = BankAccount.newBuilder();
+        bankAccountBuilder.accountNumber(String.valueOf((int) Math.random() * 1000000000));
+        bankAccountBuilder.routingNumber(String.valueOf((int)Math.random()*1000000000));
+        return bankAccountBuilder.build();
     }
 
     public static PaymentMethod getRandomPaymentMethod(){

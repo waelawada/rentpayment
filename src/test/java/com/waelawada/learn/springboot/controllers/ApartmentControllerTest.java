@@ -1,7 +1,11 @@
 package com.waelawada.learn.springboot.controllers;
 
 import com.waelawada.learn.springboot.Application;
+import com.waelawada.learn.springboot.converters.ApartmentConverter;
 import com.waelawada.learn.springboot.domain.community.Apartment;
+import com.waelawada.learn.springboot.dto.apartments.ApartmentDto;
+import com.waelawada.learn.springboot.dto.apartments.FullApartmentDto;
+import com.waelawada.learn.springboot.fixtures.ApartmentFixture;
 import com.waelawada.learn.springboot.services.ApartmentService;
 import com.waelawada.learn.springboot.services.CommunityService;
 import com.waelawada.learn.springboot.services.UserService;
@@ -14,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -31,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
+//@WebAppConfiguration
 public class ApartmentControllerTest {
 
     private MockMvc mockMvc;
@@ -40,7 +45,7 @@ public class ApartmentControllerTest {
     @InjectMocks
     private ApartmentController apartmentController;
 
-    @Mock
+    @Autowired
     private ApartmentService apartmentService;
 
     @Mock
@@ -51,18 +56,22 @@ public class ApartmentControllerTest {
 
     @Before
     public void setup() {
-        Apartment apartment = Apartments.getApartment();
-        apartment.setId(1L);
-        when(apartmentService.findById(1L)).thenReturn(apartment);
-
+        when(apartmentService.findById(1L)).thenReturn(ApartmentFixture.APARTMENT_1);
+        System.out.println(apartmentService);
         mockMvc = MockMvcBuilders.standaloneSetup(apartmentController).build();
     }
 
     @Test
     public void testGetExistingApartment() throws Exception {
+        FullApartmentDto returnedApartment =
+                (FullApartmentDto)ApartmentConverter.convertEntityToDto(apartmentService.findById(1L), FullApartmentDto.class);
+
         mockMvc.perform(get("/apartment/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)));
+                .andExpect(jsonPath("$.id", is(returnedApartment.getId())))
+                .andExpect(jsonPath("$.apartmentId", is(returnedApartment.getApartmentId())))
+                .andExpect(jsonPath("$.resident[0].firstname", is(returnedApartment.getResident().getFirstName())))
+        ;
 
         System.out.println(apartmentService.findById(1L));
 

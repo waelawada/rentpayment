@@ -39,6 +39,19 @@ public class Apartment {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    private Apartment(Builder builder) {
+        setId(builder.id);
+        setApartmentId(builder.apartmentId);
+        setCommunity(builder.community);
+        setResidentUser(builder.residentUser);
+        setMonthlyRent(builder.monthlyRent);
+        setAddress(builder.address);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public Long getId() {
         return id;
     }
@@ -97,5 +110,52 @@ public class Apartment {
                 ", monthlyRent=" + monthlyRent +
                 ", address=" + address +
                 '}';
+    }
+
+
+    public static final class Builder {
+        private Long id;
+        private String apartmentId;
+        private Community community;
+        private ResidentUser residentUser;
+        private double monthlyRent;
+        private Address address;
+
+        private Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder apartmentId(String apartmentId) {
+            this.apartmentId = apartmentId;
+            return this;
+        }
+
+        public Builder community(Community community) {
+            this.community = community;
+            return this;
+        }
+
+        public Builder residentUser(ResidentUser residentUser) {
+            this.residentUser = residentUser;
+            return this;
+        }
+
+        public Builder monthlyRent(double monthlyRent) {
+            this.monthlyRent = monthlyRent;
+            return this;
+        }
+
+        public Builder address(Address address) {
+            this.address = address;
+            return this;
+        }
+
+        public Apartment build() {
+            return new Apartment(this);
+        }
     }
 }

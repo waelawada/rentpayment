@@ -12,11 +12,11 @@ public class Apartments {
     private static DataFactory dataFactory = new DataFactory();
 
     public static Apartment getApartment(){
-        Apartment apartment = new Apartment();
-        apartment.setResidentUser((ResidentUser)Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT));
-        apartment.setAddress(Addresses.getAddress());
-        apartment.setApartmentId(dataFactory.getRandomText(5,5));
-        apartment.setMonthlyRent(dataFactory.getNumberBetween(1000,2000));
+        Apartment apartment = Apartment.newBuilder()
+        .residentUser((ResidentUser)Users.getUserWithAddressWithPayments(Users.UserType.RESIDENT))
+        .address(Addresses.getAddress())
+        .apartmentId(dataFactory.getRandomText(5,5))
+        .monthlyRent(dataFactory.getNumberBetween(1000,2000)).build();
         return apartment;
     }
 

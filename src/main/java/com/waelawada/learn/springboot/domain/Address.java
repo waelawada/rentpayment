@@ -34,6 +34,19 @@ public class Address {
         this.country = country;
     }
 
+    private Address(Builder builder) {
+        setId(builder.id);
+        setStreetAddress(builder.streetAddress);
+        setCity(builder.city);
+        setState(builder.state);
+        setZipCode(builder.zipCode);
+        setCountry(builder.country);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public String getStreetAddress() {
         return streetAddress;
     }
@@ -119,5 +132,52 @@ public class Address {
         result = 31 * result + (zipCode != null ? zipCode.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
         return result;
+    }
+
+
+    public static final class Builder {
+        private Long id;
+        private String streetAddress;
+        private String city;
+        private String state;
+        private String zipCode;
+        private String country;
+
+        private Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder streetAddress(String streetAddress) {
+            this.streetAddress = streetAddress;
+            return this;
+        }
+
+        public Builder city(String city) {
+            this.city = city;
+            return this;
+        }
+
+        public Builder state(String state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder zipCode(String zipCode) {
+            this.zipCode = zipCode;
+            return this;
+        }
+
+        public Builder country(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public Address build() {
+            return new Address(this);
+        }
     }
 }

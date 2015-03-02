@@ -174,4 +174,69 @@ public abstract class User {
     private void setLastUpdateDate(){
         this.setLastUpdated(new Date());
     }
+
+    public static abstract class Builder<T extends Builder<T>>{
+        private Long id;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String password;
+        private Address address;
+        private Date joinDate;
+        private Date lastUpdated;
+        private Date lastLogin;
+
+        public Builder(){
+
+        }
+
+        public T id(Long id) {
+            this.id = id;
+            return getThis();
+        }
+
+        public T firstName(String firstName) {
+            this.firstName = firstName;
+            return getThis();
+        }
+
+        public T lastName(String lastName) {
+            this.lastName = lastName;
+            return getThis();
+        }
+
+        public T email(String email) {
+            this.email = email;
+            return getThis();
+        }
+
+        public T password(String password) {
+            this.password = password;
+            return getThis();
+        }
+
+        public T address(Address address) {
+            this.address = address;
+            return getThis();
+        }
+
+        public T joinDate(Date joinDate) {
+            this.joinDate = joinDate;
+            return getThis();
+        }
+
+        public T lastUpdated(Date lastUpdated) {
+            this.lastUpdated = lastUpdated;
+            return getThis();
+        }
+
+        public T lastLogin(Date lastLogin) {
+            this.lastLogin = lastLogin;
+            return getThis();
+        }
+
+        public abstract User build();
+        public abstract T getThis();
+
+    }
 }

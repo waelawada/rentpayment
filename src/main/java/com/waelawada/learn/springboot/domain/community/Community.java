@@ -36,6 +36,18 @@ public class Community {
     @JsonBackReference
     private List<ManagerUser> managers;
 
+    private Community(Builder builder) {
+        setId(builder.id);
+        setName(builder.name);
+        setAddress(builder.address);
+        setApartments(builder.apartments);
+        setManagers(builder.managers);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public Long getId() {
         return id;
     }
@@ -84,5 +96,46 @@ public class Community {
     public List<ManagerUser> addManager(ManagerUser manager){
         getManagers().add(manager);
         return getManagers();
+    }
+
+
+    public static final class Builder {
+        private Long id;
+        private String name;
+        private Address address;
+        private List<Apartment> apartments;
+        private List<ManagerUser> managers;
+
+        private Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder address(Address address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder apartments(List<Apartment> apartments) {
+            this.apartments = apartments;
+            return this;
+        }
+
+        public Builder managers(List<ManagerUser> managers) {
+            this.managers = managers;
+            return this;
+        }
+
+        public Community build() {
+            return new Community(this);
+        }
     }
 }

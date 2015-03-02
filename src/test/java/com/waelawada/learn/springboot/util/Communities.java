@@ -15,8 +15,7 @@ public class Communities {
     private static DataFactory dataFactory = new DataFactory();
 
     public static Community getEmptyCommunity(){
-        Community community = new Community();
-        community.setName(dataFactory.getRandomWord());
+        Community community = Community.newBuilder().name(dataFactory.getRandomWord()).build();
         return community;
     }
 
