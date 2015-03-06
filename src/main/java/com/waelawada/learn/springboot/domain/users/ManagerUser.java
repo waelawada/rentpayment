@@ -30,6 +30,9 @@ public class ManagerUser extends User {
         return new Builder();
     }
 
+    public ManagerUser() {
+    }
+
     public Community getCommunity() {
         return community;
     }

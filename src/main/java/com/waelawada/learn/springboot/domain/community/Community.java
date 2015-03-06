@@ -44,6 +44,9 @@ public class Community {
         setManagers(builder.managers);
     }
 
+    public Community() {
+    }
+
     public static Builder newBuilder() {
         return new Builder();
     }

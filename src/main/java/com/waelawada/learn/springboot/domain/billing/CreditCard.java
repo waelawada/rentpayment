@@ -31,6 +31,9 @@ public class CreditCard extends PaymentMethod {
         setId(builder.id);
     }
 
+    public CreditCard() {
+    }
+
     public static Builder newBuilder() {
         return new Builder();
     }

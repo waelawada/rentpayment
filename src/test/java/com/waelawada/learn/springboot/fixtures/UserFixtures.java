@@ -14,7 +14,7 @@ public class UserFixtures {
 
     public static final ResidentUser FULL_RESIDENT_USER_1 = ResidentUser.newBuilder()
             .paymentMethods((List<PaymentMethod>) (List<?>) Arrays.asList(PaymentMethodFixture.CREDIT_CARD_1))
-            .apartment(ApartmentFixture.APARTMENT_1)
+            .apartment(ApartmentFixture.FULL_APARTMENT_1)
             .firstName("John").lastName("Doe").email("john@doe.com").address(AddressFixtures.FL_ADDRESS_1)
             .password("password").id(1L).build();
 

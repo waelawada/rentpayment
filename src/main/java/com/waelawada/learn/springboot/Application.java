@@ -3,9 +3,11 @@ package com.waelawada.learn.springboot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Arrays;
@@ -25,6 +27,11 @@ public class Application {
         for (String beanName : beanNames) {
             System.out.println(beanName);
         }
+    }
+
+    @Bean
+    public OpenSessionInViewFilter applicationContextIdFilter() {
+        return new OpenSessionInViewFilter();
     }
 
 }

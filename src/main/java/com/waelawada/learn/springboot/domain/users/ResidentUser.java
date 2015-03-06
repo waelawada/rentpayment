@@ -32,6 +32,9 @@ public class ResidentUser extends User {
         setApartment(builder.apartment);
     }
 
+    public ResidentUser() {
+    }
+
     public static Builder newBuilder() {
         return new Builder();
     }

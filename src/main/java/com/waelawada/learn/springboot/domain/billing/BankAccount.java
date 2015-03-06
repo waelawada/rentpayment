@@ -24,6 +24,9 @@ public class BankAccount extends PaymentMethod {
         setId(builder.id);
     }
 
+    public BankAccount() {
+    }
+
     public static Builder newBuilder() {
         return new Builder();
     }

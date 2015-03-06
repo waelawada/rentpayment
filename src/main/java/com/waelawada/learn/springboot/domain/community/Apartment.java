@@ -48,6 +48,9 @@ public class Apartment {
         setAddress(builder.address);
     }
 
+    public Apartment() {
+    }
+
     public static Builder newBuilder() {
         return new Builder();
     }
