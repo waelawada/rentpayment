@@ -1,7 +1,6 @@
-package com.waelawada.learn.springboot.dto.community;
+package com.waelawada.learn.springboot.dto.response.community;
 
-import com.waelawada.learn.springboot.dto.apartments.FullCommunityApartmentDto;
-import com.waelawada.learn.springboot.dto.users.FullCommunityManagerDto;
+import com.waelawada.learn.springboot.dto.CommunityDto;
 
 import java.util.List;
 

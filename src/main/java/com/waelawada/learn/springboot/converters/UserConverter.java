@@ -3,8 +3,17 @@ package com.waelawada.learn.springboot.converters;
 import com.waelawada.learn.springboot.domain.users.ManagerUser;
 import com.waelawada.learn.springboot.domain.users.ResidentUser;
 import com.waelawada.learn.springboot.domain.users.User;
-import com.waelawada.learn.springboot.dto.community.FullManagerCommunityDto;
-import com.waelawada.learn.springboot.dto.users.*;
+import com.waelawada.learn.springboot.dto.UserDto;
+import com.waelawada.learn.springboot.dto.request.manager.RequestManagerDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerCommunityDto;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentCommunityManagerDto;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentResidentDto;
+import com.waelawada.learn.springboot.dto.response.community.FullCommunityApartmentResidentDto;
+import com.waelawada.learn.springboot.dto.response.community.FullCommunityManagerDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerCommunityApartmentResidentDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerDto;
+import com.waelawada.learn.springboot.dto.response.resident.FullResidentApartmentCommunityManagerDto;
+import com.waelawada.learn.springboot.dto.response.resident.FullResidentDto;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +27,8 @@ public class UserConverter {
         if(userDto == null) return null;
         if(userDto instanceof FullManagerDto
                 ||userDto instanceof FullApartmentCommunityManagerDto
-                || userDto instanceof FullResidentApartmentCommunityManagerDto){
+                || userDto instanceof FullResidentApartmentCommunityManagerDto
+                || userDto instanceof RequestManagerDto){
             return setVariablesForManagerDto(userDto);
         }
         else return setVariablesForResidentDto(userDto);

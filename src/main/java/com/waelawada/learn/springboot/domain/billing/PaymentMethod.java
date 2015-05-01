@@ -1,6 +1,8 @@
 package com.waelawada.learn.springboot.domain.billing;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
 
 import javax.persistence.*;
 
@@ -15,6 +17,7 @@ import javax.persistence.*;
 public abstract class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiObjectField
     private Long id;
 
     public Long getId() {

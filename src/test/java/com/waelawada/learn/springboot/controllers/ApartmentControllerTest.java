@@ -2,8 +2,7 @@ package com.waelawada.learn.springboot.controllers;
 
 import com.waelawada.learn.springboot.Application;
 import com.waelawada.learn.springboot.converters.ApartmentConverter;
-import com.waelawada.learn.springboot.dto.apartments.FullApartmentDto;
-import com.waelawada.learn.springboot.fixtures.ApartmentFixture;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentDto;
 import com.waelawada.learn.springboot.services.ApartmentService;
 import com.waelawada.learn.springboot.services.CommunityService;
 import com.waelawada.learn.springboot.services.UserService;
@@ -11,7 +10,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -22,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

@@ -1,6 +1,6 @@
-package com.waelawada.learn.springboot.dto.apartments;
+package com.waelawada.learn.springboot.dto.response.manager;
 
-import com.waelawada.learn.springboot.dto.users.FullManagerCommunityApartmentResidentDto;
+import com.waelawada.learn.springboot.dto.ApartmentDto;
 
 /**
  * Created by waelawada on 2/21/15.

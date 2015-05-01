@@ -2,12 +2,16 @@ package com.waelawada.learn.springboot.converters;
 
 import com.waelawada.learn.springboot.domain.community.Community;
 import com.waelawada.learn.springboot.domain.users.ManagerUser;
-import com.waelawada.learn.springboot.dto.apartments.FullCommunityApartmentDto;
-import com.waelawada.learn.springboot.dto.apartments.FullManagerCommunityApartmentDto;
-import com.waelawada.learn.springboot.dto.community.*;
-import com.waelawada.learn.springboot.dto.users.FullApartmentCommunityManagerDto;
-import com.waelawada.learn.springboot.dto.users.FullCommunityManagerDto;
-import com.waelawada.learn.springboot.dto.users.FullResidentApartmentCommunityManagerDto;
+import com.waelawada.learn.springboot.dto.CommunityDto;
+import com.waelawada.learn.springboot.dto.response.community.FullCommunityApartmentDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerCommunityApartmentDto;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentCommunityDto;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentCommunityManagerDto;
+import com.waelawada.learn.springboot.dto.response.community.FullCommunityDto;
+import com.waelawada.learn.springboot.dto.response.community.FullCommunityManagerDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerCommunityDto;
+import com.waelawada.learn.springboot.dto.response.resident.FullResidentApartmentCommunityDto;
+import com.waelawada.learn.springboot.dto.response.resident.FullResidentApartmentCommunityManagerDto;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +48,7 @@ public class CommunityConverter {
         CommunityDto communityDto = null;
         if(community == null) return null;
         try {
-            if(communityDtoClass == getClassByClassName("FullApartmentCommunityDto")){
+            if(communityDtoClass == getClassByClassName("FullCommunityApartmentDto")){
                 communityDto = new FullApartmentCommunityDto();
                 ((FullApartmentCommunityDto) communityDto).setManagers(UserConverter.convertEntityListToDtoList(community.getManagers(), FullApartmentCommunityManagerDto.class));
             }
@@ -80,7 +84,7 @@ public class CommunityConverter {
     }
 
     private static Class getClassByClassName(String className) throws ClassNotFoundException {
-        return Class.forName("com.waelawada.learn.springboot.dto.community."+className);
+        return Class.forName("com.waelawada.learn.springboot.dto.response.community."+className);
     }
 
 

@@ -1,6 +1,8 @@
 package com.waelawada.learn.springboot.domain.billing;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -9,13 +11,16 @@ import javax.persistence.Table;
 /**
  * Created by waelawada on 2/12/15.
  */
+@ApiObject(name = "BANK_ACCOUNT", description = "A Bank account payment method")
 @Entity
 @DiscriminatorValue("bank_account")
 @Table(name = "bank_account")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BankAccount extends PaymentMethod {
 
+    @ApiObjectField
     private String routingNumber;
+    @ApiObjectField
     private String accountNumber;
 
     private BankAccount(Builder builder) {

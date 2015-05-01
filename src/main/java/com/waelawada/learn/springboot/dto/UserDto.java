@@ -1,4 +1,4 @@
-package com.waelawada.learn.springboot.dto.users;
+package com.waelawada.learn.springboot.dto;
 
 import com.waelawada.learn.springboot.domain.Address;
 import com.waelawada.learn.springboot.dto.Dto;

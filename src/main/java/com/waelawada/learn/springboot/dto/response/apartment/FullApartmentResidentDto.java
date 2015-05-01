@@ -1,14 +1,14 @@
-package com.waelawada.learn.springboot.dto.users;
+package com.waelawada.learn.springboot.dto.response.apartment;
 
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
-import com.waelawada.learn.springboot.dto.payments.ResidentPaymentMethodDto;
+import com.waelawada.learn.springboot.dto.UserDto;
 
 import java.util.List;
 
 /**
  * Created by waelawada on 2/21/15.
  */
-public class FullCommunityApartmentResidentDto extends UserDto {
+public class FullApartmentResidentDto extends UserDto {
     private List<PaymentMethod> paymentMethods;
 
     public List<PaymentMethod> getPaymentMethods() {

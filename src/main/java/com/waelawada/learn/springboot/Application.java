@@ -1,5 +1,6 @@
 package com.waelawada.learn.springboot;
 
+import org.jsondoc.spring.boot.starter.EnableJSONDoc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @EnableJpaRepositories("com.waelawada.learn.springboot.dao")
+@EnableJSONDoc
 @ComponentScan(basePackages = "com.waelawada.learn.springboot")
 public class Application {
 

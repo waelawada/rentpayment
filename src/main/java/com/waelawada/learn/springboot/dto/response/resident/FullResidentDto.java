@@ -1,7 +1,7 @@
-package com.waelawada.learn.springboot.dto.users;
+package com.waelawada.learn.springboot.dto.response.resident;
 
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
-import com.waelawada.learn.springboot.dto.apartments.FullResidentApartmentDto;
+import com.waelawada.learn.springboot.dto.UserDto;
 
 import java.util.List;
 

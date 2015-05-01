@@ -2,12 +2,16 @@ package com.waelawada.learn.springboot.converters;
 
 import com.waelawada.learn.springboot.domain.community.Apartment;
 import com.waelawada.learn.springboot.domain.users.ResidentUser;
-import com.waelawada.learn.springboot.dto.apartments.*;
-import com.waelawada.learn.springboot.dto.community.FullApartmentCommunityDto;
-import com.waelawada.learn.springboot.dto.community.FullResidentApartmentCommunityDto;
-import com.waelawada.learn.springboot.dto.users.FullApartmentResidentDto;
-import com.waelawada.learn.springboot.dto.users.FullCommunityApartmentResidentDto;
-import com.waelawada.learn.springboot.dto.users.FullManagerCommunityApartmentResidentDto;
+import com.waelawada.learn.springboot.dto.ApartmentDto;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentCommunityDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerCommunityApartmentDto;
+import com.waelawada.learn.springboot.dto.response.resident.FullResidentApartmentCommunityDto;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentDto;
+import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentResidentDto;
+import com.waelawada.learn.springboot.dto.response.community.FullCommunityApartmentDto;
+import com.waelawada.learn.springboot.dto.response.community.FullCommunityApartmentResidentDto;
+import com.waelawada.learn.springboot.dto.response.resident.FullResidentApartmentDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerCommunityApartmentResidentDto;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -68,7 +72,7 @@ public class ApartmentConverter {
     }
 
     private static Class getClassFromClassName(String className) throws ClassNotFoundException {
-        return Class.forName("com.waelawada.learn.springboot.dto.apartments."+className);
+        return Class.forName("com.waelawada.learn.springboot.dto.response.apartment."+className);
     }
 
     public static <T extends ApartmentDto, U extends Apartment> List<U> convertDtoListToEntityList(List<T> apartmentDtos){

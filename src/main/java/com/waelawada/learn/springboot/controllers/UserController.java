@@ -1,24 +1,30 @@
 package com.waelawada.learn.springboot.controllers;
 
 import com.waelawada.learn.springboot.converters.UserConverter;
+import com.waelawada.learn.springboot.dao.PaymentMethodDao;
 import com.waelawada.learn.springboot.domain.users.ManagerUser;
 import com.waelawada.learn.springboot.domain.users.ResidentUser;
 import com.waelawada.learn.springboot.domain.users.User;
 import com.waelawada.learn.springboot.domain.billing.PaymentMethod;
-import com.waelawada.learn.springboot.dto.users.FullManagerDto;
-import com.waelawada.learn.springboot.dto.users.FullResidentDto;
-import com.waelawada.learn.springboot.dto.users.UserDto;
+import com.waelawada.learn.springboot.dto.request.manager.RequestManagerDto;
+import com.waelawada.learn.springboot.dto.request.resident.RequestResidentDto;
+import com.waelawada.learn.springboot.dto.response.manager.FullManagerDto;
+import com.waelawada.learn.springboot.dto.response.resident.FullResidentDto;
+import com.waelawada.learn.springboot.dto.UserDto;
 import com.waelawada.learn.springboot.exception.ApplicationError;
-import com.waelawada.learn.springboot.exception.apartment.ApartmentNotFoundException;
-import com.waelawada.learn.springboot.exception.community.CommunityNotFoundException;
 import com.waelawada.learn.springboot.exception.user.UserNotFoundException;
+import com.waelawada.learn.springboot.services.PaymentMethodService;
 import com.waelawada.learn.springboot.services.UserService;
+import org.jsondoc.core.annotation.*;
+import org.jsondoc.core.pojo.ApiVerb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(name = "User", description = "Access the user service")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -26,22 +32,37 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PaymentMethodService paymentMethodService;
+
+
+    @ApiMethod(description = "Get information about a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
     @RequestMapping(value = "/{id}")
-    public UserDto index(@PathVariable Long id) {
+    public UserDto index(@ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id) {
         User user = userService.findById(id);
         if(user == null) throw new UserNotFoundException(id);
         return getUserDto(user);
     }
 
+    @ApiMethod(description = "Add a new User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
     @RequestMapping(method = RequestMethod.POST)
-    public UserDto addUser(User user){
-        return getUserDto(userService.save(user));
+    public UserDto addUser(@ApiBodyObject(clazz = UserDto.class) @RequestBody UserDto userDto){
+        return getUserDto(userService.save(UserConverter.convertDtoToEntity(userDto)));
     }
 
+    @ApiMethod(description = "Update a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.PUT)
     @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
-    public UserDto updateUser(@PathVariable Long id, User user){
+    public UserDto updateUser(
+            @ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id,
+            @ApiBodyObject(clazz = UserDto.class) @RequestBody UserDto user){
         User userToBeUpdated = userService.findById(id);
-        User updatedUser = userService.updateUser(userToBeUpdated, user);
+        try{
+            user = (RequestManagerDto) user;
+        }
+        catch (ClassCastException cce){
+            user = (RequestResidentDto) user;
+        }
+        User updatedUser = userService.updateUser(userToBeUpdated, UserConverter.convertDtoToEntity(user));
         return getUserDto(updatedUser);
     }
 
@@ -54,29 +75,35 @@ public class UserController {
         }
     }
 
+    @ApiMethod(description = "Add a payment Method to a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.POST)
-    public UserDto addPaymentMethodToUser(@PathVariable Long id, PaymentMethod paymentMethod){
+    public UserDto addPaymentMethodToUser(
+            @ApiPathParam(description = "The Id of the User", name = "id") @PathVariable Long id,
+            @ApiBodyObject(clazz = PaymentMethod.class) @RequestBody PaymentMethod paymentMethod){
         ResidentUser user = (ResidentUser)userService.findById(id);
+        if(user == null) throw new UserNotFoundException(id);
         return getUserDto(userService.addPaymentMethodToUser(user, paymentMethod));
     }
 
+    @ApiMethod(description = "Get a list of payment methods belonging to a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.GET)
-    public List<PaymentMethod> getPaymentMethodsByResidentUser(@PathVariable Long id){
+    public List<PaymentMethod> getPaymentMethodsByResidentUser(
+            @ApiPathParam(name = "id", description = "The Id of the user") @PathVariable Long id){
         ResidentUser user = (ResidentUser)userService.findById(id);
+        if(user == null) throw new UserNotFoundException(id);
         return user.getPaymentMethods();
     }
 
+    @ApiMethod(description = "Remove a Payment Method for a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.DELETE)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.DELETE)
-    public Boolean deletePaymentMethod(@PathVariable Long id, Long paymentMethodId){
-        return userService.removePaymentMethodForUser(id, paymentMethodId);
+    public UserDto deletePaymentMethod(
+            @ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id,
+            @ApiQueryParam(name = "paymentMethodId", description = "The Id of the payment method to be removed") Long paymentMethodId){
+        ResidentUser user = (ResidentUser)userService.findById(id);
+        if(user == null) throw new UserNotFoundException(id);
+        user.getPaymentMethods().remove(paymentMethodService.findById(id));
+        return UserConverter.convertEntityToDto(userService.save(user), FullResidentDto.class);
     }
 
-    @ExceptionHandler(value = UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApplicationError userNotFound(UserNotFoundException upe){
-        Long userId = upe.getObjectId();
-        String externalUserId = upe.getExternalObjectId();
-        String messageId = (externalUserId!=null ? externalUserId : String.valueOf(userId));
-        return new ApplicationError(31, "User "+messageId+" not found");
-    }
+
 }

@@ -2,24 +2,32 @@ package com.waelawada.learn.springboot.domain.billing;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.waelawada.learn.springboot.domain.Address;
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
 
 import javax.persistence.*;
 
 /**
  * Created by waelawada on 2/12/15.
  */
+@ApiObject
 @Entity
 @DiscriminatorValue("credit_card")
 @Table(name = "credit_card")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CreditCard extends PaymentMethod {
 
+    @ApiObjectField
     private String creditCardNumber;
+    @ApiObjectField
     private String expirationDate;
+    @ApiObjectField
     private String cvv2;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
+    @ApiObjectField
     private Address billingAddress;
+    @ApiObjectField
     private String token;
 
     private CreditCard(Builder builder) {

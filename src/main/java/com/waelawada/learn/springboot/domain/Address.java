@@ -1,6 +1,8 @@
 package com.waelawada.learn.springboot.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.jsondoc.core.annotation.ApiObject;
+import org.jsondoc.core.annotation.ApiObjectField;
 
 import javax.persistence.*;
 
@@ -10,17 +12,24 @@ import javax.persistence.*;
 @Entity
 @Table(name = "address")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@ApiObject(name = "address", description = "Address of Entity")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiObjectField(name = "id", description = "Database id of an address")
     private Long id;
     @Column(name = "street_address")
+    @ApiObjectField(name = "streetAddress", description = "Street Address")
     private String streetAddress;
+    @ApiObjectField(name = "city", description = "City")
     private String city;
+    @ApiObjectField(name = "state", description = "State")
     private String state;
     @Column(name = "zip_code")
+    @ApiObjectField(name = "zipCode", description = "Zip Code")
     private String zipCode;
+    @ApiObjectField(name = "country", description = "Country")
     private String country;
 
     public Address() {

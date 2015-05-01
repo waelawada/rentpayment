@@ -61,4 +61,6 @@ public class ManagerUser extends User {
             return new ManagerUser(this);
         }
     }
+
+
 }
