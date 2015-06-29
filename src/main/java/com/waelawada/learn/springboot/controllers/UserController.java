@@ -13,6 +13,7 @@ import com.waelawada.learn.springboot.dto.response.resident.FullResidentDto;
 import com.waelawada.learn.springboot.dto.UserDto;
 import com.waelawada.learn.springboot.exception.ApplicationError;
 import com.waelawada.learn.springboot.exception.user.UserNotFoundException;
+import com.waelawada.learn.springboot.jsondoc.JsonDocConstants;
 import com.waelawada.learn.springboot.services.PaymentMethodService;
 import com.waelawada.learn.springboot.services.UserService;
 import org.jsondoc.core.annotation.*;
@@ -36,7 +37,7 @@ public class UserController {
     private PaymentMethodService paymentMethodService;
 
 
-    @ApiMethod(description = "Get information about a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
+    @ApiMethod(id= JsonDocConstants.USER_GET, description = "Get information about a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
     @RequestMapping(value = "/{id}")
     public UserDto index(@ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id) {
         User user = userService.findById(id);
@@ -44,13 +45,13 @@ public class UserController {
         return getUserDto(user);
     }
 
-    @ApiMethod(description = "Add a new User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
+    @ApiMethod(id= JsonDocConstants.USER_ADD, description = "Add a new User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
     @RequestMapping(method = RequestMethod.POST)
     public UserDto addUser(@ApiBodyObject(clazz = UserDto.class) @RequestBody UserDto userDto){
         return getUserDto(userService.save(UserConverter.convertDtoToEntity(userDto)));
     }
 
-    @ApiMethod(description = "Update a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.PUT)
+    @ApiMethod(id = JsonDocConstants.USER_UPDATE, description = "Update a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.PUT)
     @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
     public UserDto updateUser(
             @ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id,
@@ -75,7 +76,7 @@ public class UserController {
         }
     }
 
-    @ApiMethod(description = "Add a payment Method to a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
+    @ApiMethod(id = JsonDocConstants.USER_PAYMENT_ADD, description = "Add a payment Method to a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.POST)
     public UserDto addPaymentMethodToUser(
             @ApiPathParam(description = "The Id of the User", name = "id") @PathVariable Long id,
@@ -85,7 +86,7 @@ public class UserController {
         return getUserDto(userService.addPaymentMethodToUser(user, paymentMethod));
     }
 
-    @ApiMethod(description = "Get a list of payment methods belonging to a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
+    @ApiMethod(id = JsonDocConstants.USER_PAYMENT_LIST, description = "Get a list of payment methods belonging to a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.GET)
     public List<PaymentMethod> getPaymentMethodsByResidentUser(
             @ApiPathParam(name = "id", description = "The Id of the user") @PathVariable Long id){
@@ -94,7 +95,7 @@ public class UserController {
         return user.getPaymentMethods();
     }
 
-    @ApiMethod(description = "Remove a Payment Method for a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.DELETE)
+    @ApiMethod(id = JsonDocConstants.USER_PAYMENT_REMOVE, description = "Remove a Payment Method for a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.DELETE)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.DELETE)
     public UserDto deletePaymentMethod(
             @ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id,

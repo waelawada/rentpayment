@@ -8,6 +8,7 @@ import com.waelawada.learn.springboot.dto.request.apartment.RequestApartmentDto;
 import com.waelawada.learn.springboot.dto.response.apartment.FullApartmentDto;
 import com.waelawada.learn.springboot.exception.ApplicationError;
 import com.waelawada.learn.springboot.exception.apartment.ApartmentNotFoundException;
+import com.waelawada.learn.springboot.jsondoc.JsonDocConstants;
 import com.waelawada.learn.springboot.services.ApartmentService;
 import com.waelawada.learn.springboot.services.CommunityService;
 import com.waelawada.learn.springboot.services.UserService;
@@ -37,13 +38,13 @@ public class ApartmentController {
     @Autowired
     private UserService userService;
 
-    @ApiMethod(description = "Gets a List of All Apartments", produces = "application/json", verb = ApiVerb.GET)
+    @ApiMethod(id = JsonDocConstants.APARTMENT_LIST_GET, description= "Gets a List of All Apartments", produces = "application/json", verb = ApiVerb.GET)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ApiResponseObject List<? extends ApartmentDto> getAllApartments(){
         return ApartmentConverter.convertEntityListToDtoList(apartmentService.findAll(), FullApartmentDto.class);
     }
 
-    @ApiMethod(description = "Gets information about a specific apartment", produces = "application/json", verb = ApiVerb.GET)
+    @ApiMethod(id = JsonDocConstants.APARTMENT_GET, description = "Gets information about a specific apartment", produces = "application/json", verb = ApiVerb.GET)
     @ApiParams(pathparams = {@ApiPathParam(name = "id", description = "The id of the apartment requested",clazz = Long.class)})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ApiResponseObject ApartmentDto getApartment(@PathVariable Long id){
@@ -52,7 +53,7 @@ public class ApartmentController {
         return ApartmentConverter.convertEntityToDto(apartment, FullApartmentDto.class);
     }
 
-    @ApiMethod(description = "Saves a new Apartment", produces = "application/json", verb = ApiVerb.POST)
+    @ApiMethod(id = JsonDocConstants.APARTMENT_ADD, description = "Saves a new Apartment", produces = "application/json", verb = ApiVerb.POST)
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public @ApiResponseObject ApartmentDto saveApartment(@ApiBodyObject(clazz = RequestApartmentDto.class) @RequestBody RequestApartmentDto apartment){
