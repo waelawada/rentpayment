@@ -39,7 +39,7 @@ public class UserController {
 
     @ApiMethod(id= JsonDocConstants.USER_GET, description = "Get information about a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
     @RequestMapping(value = "/{id}")
-    public UserDto index(@ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id) {
+    public @ApiResponseObject UserDto index(@ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id) {
         User user = userService.findById(id);
         if(user == null) throw new UserNotFoundException(id);
         return getUserDto(user);
@@ -47,13 +47,13 @@ public class UserController {
 
     @ApiMethod(id= JsonDocConstants.USER_ADD, description = "Add a new User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
     @RequestMapping(method = RequestMethod.POST)
-    public UserDto addUser(@ApiBodyObject(clazz = UserDto.class) @RequestBody UserDto userDto){
+    public @ApiResponseObject UserDto addUser(@ApiBodyObject(clazz = UserDto.class) @RequestBody UserDto userDto){
         return getUserDto(userService.save(UserConverter.convertDtoToEntity(userDto)));
     }
 
     @ApiMethod(id = JsonDocConstants.USER_UPDATE, description = "Update a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.PUT)
     @RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
-    public UserDto updateUser(
+    public @ApiResponseObject UserDto updateUser(
             @ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id,
             @ApiBodyObject(clazz = UserDto.class) @RequestBody UserDto user){
         User userToBeUpdated = userService.findById(id);
@@ -78,7 +78,7 @@ public class UserController {
 
     @ApiMethod(id = JsonDocConstants.USER_PAYMENT_ADD, description = "Add a payment Method to a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.POST)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.POST)
-    public UserDto addPaymentMethodToUser(
+    public @ApiResponseObject UserDto addPaymentMethodToUser(
             @ApiPathParam(description = "The Id of the User", name = "id") @PathVariable Long id,
             @ApiBodyObject(clazz = PaymentMethod.class) @RequestBody PaymentMethod paymentMethod){
         ResidentUser user = (ResidentUser)userService.findById(id);
@@ -88,7 +88,7 @@ public class UserController {
 
     @ApiMethod(id = JsonDocConstants.USER_PAYMENT_LIST, description = "Get a list of payment methods belonging to a user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.GET)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.GET)
-    public List<PaymentMethod> getPaymentMethodsByResidentUser(
+    public @ApiResponseObject List<PaymentMethod> getPaymentMethodsByResidentUser(
             @ApiPathParam(name = "id", description = "The Id of the user") @PathVariable Long id){
         ResidentUser user = (ResidentUser)userService.findById(id);
         if(user == null) throw new UserNotFoundException(id);
@@ -97,7 +97,7 @@ public class UserController {
 
     @ApiMethod(id = JsonDocConstants.USER_PAYMENT_REMOVE, description = "Remove a Payment Method for a User", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, verb = ApiVerb.DELETE)
     @RequestMapping(value = "/{id}/payment-method", method = RequestMethod.DELETE)
-    public UserDto deletePaymentMethod(
+    public @ApiResponseObject UserDto deletePaymentMethod(
             @ApiPathParam(name = "id", description = "The Id of the User") @PathVariable Long id,
             @ApiQueryParam(name = "paymentMethodId", description = "The Id of the payment method to be removed") Long paymentMethodId){
         ResidentUser user = (ResidentUser)userService.findById(id);
